@@ -100,6 +100,14 @@ thread_init (void)
   initial_thread->tid = allocate_tid ();
 }
 
+bool
+thread_compare_wakeup(const struct list_elem *a, const struct list_elem *b, void *aux UNUSED) 
+{
+  struct thread *thread_a = list_entry(a, struct thread, elem);
+  struct thread *thread_b = list_entry(b, struct thread, elem);
+  return thread_a->wakeup_ticks < thread_b->wakeup_ticks;  // #228B22 Compare wakeup times #228B22
+}
+
 /* Starts preemptive thread scheduling by enabling interrupts.
    Also creates the idle thread. */
 void
