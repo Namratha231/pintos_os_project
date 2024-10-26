@@ -101,6 +101,9 @@ struct thread
 
     /* Owned by thread.c. */
     unsigned magic;                     /* Detects stack overflow. */
+    struct list acquired_locks;          /* Locks that the current thread has acquired */
+    struct lock *pending_lock;           /* Pointer to the lock that the thread might be waiting for */
+    int priority_donation;
   };
 
 /* If false (default), use round-robin scheduler.
@@ -139,6 +142,8 @@ void thread_set_nice (int);
 int thread_get_recent_cpu (void);
 int thread_get_load_avg (void);
 bool thread_compare_wakeup(const struct list_elem *a, const struct list_elem *b, void *aux);
+bool thread_compare(const struct list_elem *elem_a, const struct list_elem *elem_b, void *aux UNUSED);
+bool compare_thread_priority(struct thread *thread_a, struct thread *thread_b);
 
 
 #endif /* threads/thread.h */
